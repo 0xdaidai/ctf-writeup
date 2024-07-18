@@ -1,0 +1,22 @@
+#!/bin/sh
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t tmpfs none /tmp
+mount -t devtmpfs none /dev
+exec 0</dev/console
+exec 1>/dev/console
+exec 2>/dev/console
+echo 1 > /proc/sys/kernel/kptr_restrict
+echo 1 > /proc/sys/kernel/dmesg_restrict
+insmod /sub.ko
+chmod 666 /dev/n1sub
+
+#debug
+cat /proc/kallsyms > /tmp/kallsyms
+cat /proc/modules > /tmp/modules
+cat /sys/module/sub/sections/.bss > /tmp/bss
+
+setsid /bin/cttyhack setuidgid 1000 /bin/sh #normal user
+umount /proc
+umount /sys
+poweroff -d 0  -f

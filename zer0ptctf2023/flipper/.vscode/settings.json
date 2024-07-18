@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "keyctl.h": "c",
+        "banzi.h": "c"
+    }
+}

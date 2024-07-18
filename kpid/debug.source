@@ -1,0 +1,6 @@
+target remote :1234
+file ./vmlinuz
+add-symbol-file ./kpid.ko
+b *(0xffffffffc0000000+0x16D)
+b num_online_cpus
+c
