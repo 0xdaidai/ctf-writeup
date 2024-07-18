@@ -1,0 +1,42 @@
+target remote :1234
+define parse_page_table
+    set $address = $arg0
+    set $pgd_index = (($address >> 39) & 0x1FF)
+    set $pud_index = (($address >> 30) & 0x1FF)
+    set $pmd_index = (($address >> 21) & 0x1FF)
+    set $pte_index = (($address >> 12) & 0x1FF)
+
+    printf "Parsing page table for address 0x%016llx:\n", $address
+    printf "  PGD index: 0x%03x\n", $pgd_index
+    printf "  PUD index: 0x%03x\n", $pud_index
+    printf "  PMD index: 0x%03x\n", $pmd_index
+    printf "  PTE index: 0x%03x\n", $pte_index
+end
+
+define printb
+    set $pte = $arg0
+    printf "0b"
+    set $i = 11
+    while $i >= 0
+        if ($pte & (1 << $i))
+            printf "1"
+        else
+            printf "0"
+        end
+        set $i = $i - 1
+    end
+    printf "\n"
+end
+
+define parse_pte_attribute
+    set $address = $arg0
+    printf "Parsing attribute for address 0x%016llx:\n", $address
+    printf "bitnum: \n"
+    printf "  HIGH:"
+    printb ($address>>52)
+    printf "  LOW: "
+    printb ($address&0xfff)
+end
+
+b *0xFFFFFFFFC00000A8
+c
