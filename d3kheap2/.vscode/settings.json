@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "msg_structs.h": "c",
+        "utils.h": "c",
+        "cred.h": "c",
+        "pipe.h": "c"
+    }
+}
